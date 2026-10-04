@@ -104,3 +104,15 @@ if (window.gsap && !reduce && document.visibilityState === 'visible') {
   // Same-question tile: the second answer lands a beat after the first.
   gsap.from('.run', { opacity: 0, y: 12, duration: 0.5, stagger: 0.35, ease: 'power2.out', scrollTrigger: { trigger: '.runs', start: 'top 88%' } });
 }
+
+// Use cases: filter the cards by audience. Without this script every card stays visible.
+document.querySelectorAll('.uc-btn').forEach((btn, _, buttons) => {
+  btn.addEventListener('click', () => {
+    const filter = btn.dataset.filter;
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+    document.querySelectorAll('.uc').forEach((card) => {
+      card.hidden = filter !== 'all' && !card.dataset.for.split(' ').includes(filter);
+    });
+    window.ScrollTrigger?.refresh();
+  });
+});
